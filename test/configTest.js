@@ -4,7 +4,6 @@
 const mockRequire = require('mock-require');
 const expect = require('chai').expect
 
-
 describe('Configuration', () => {
   before(() => require('os').hostname = () => "TESTHOSTNAME") // Mock out hostname for all tests
   after(() => {
@@ -67,7 +66,7 @@ describe('Configuration', () => {
     it('should have overridden port', () => expect(config).to.have.property("port").that.equals(3002))
     it('should have overridden accessLogPath', () => expect(config).to.have.property("accessLogPath").that.equals("./TEST_LOGS2"))
     it('should have overridden accessLogRotation', () => expect(config).to.have.property("accessLogRotation").that.equals("3d"))
-    it('should have overridden serviceName', () => expect(config).to.have.property("serviceName").that.equals("UNITTESTSVCNAM2E"))
+    it('should have overridden serviceName', () => expect(config).to.have.property("serviceName").that.equals("UNITTESTSVCNAME2"))
     it('should have generated identity', () => expect(config).to.have.property("identity").that.equals("[UNITTESTSVCNAME2 TESTHOSTNAME]"))
   })
 })
