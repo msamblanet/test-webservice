@@ -27,6 +27,8 @@
     "sinon": "^6.3.5"
   },
   "nyc": {
-    "include": ["src/**/*.js"]
+    "include": [
+      "src/**/*.js"
+    ]
   }
 }
