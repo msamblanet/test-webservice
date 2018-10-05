@@ -3,23 +3,35 @@
  * using morgan and rotating-file-stream
  */
 const morgan = require('morgan')
+const path = require('path')
 const fs = require('fs')
 const rfs = require('rotating-file-stream')
-const config = require('../config')
 
-// Create directory if needed...
-fs.existsSync(config.accessLogPath) || fs.mkdirSync(config.accessLogPath)
+modules.exports = (config) => {
+  // Sanity checks...
+  if (!config) throw new Error("config required")
+  if (!config.accessLogRotation) throw new Error("config.accessLogRotation required")
+  if (!config.accessLogPath) throw new Error("config.accessLogPath required")
+  if (!config.identity) throw new Error("config.identity required")
 
-// Create access log stream...
-const accessLogStream = rfs('access.log', {
+  const logFormat ='combined'
+  const rfsFilename = 'access.log'
+  const rfsConfig = {
     interval: config.accessLogRotation,
     path: config.accessLogPath,
     compress: true,
     initialRotation: true,
     maxFiles: 30
-})
+  }
 
-// Log info
-console.log(`${config.identity} Access Log: ${config.accessLogPath}/access.log -- Rotation: ${config.accessLogRotation}`)
+  // Create directory if needed...
+  fs.existsSync(rfsConfig.path) || fs.mkdirSync(rfsConfig.path)
 
-module.exports.middleware = morgan('combined', { stream: accessLogStream })
+  // Create access log stream...
+  const rfsStream = rfs(rfsFilename, rfsConfig)
+
+  // Log info
+  console.log(`${config.identity} Writing access logs to: ${path.resolve(rfsStream.name)}`)
+
+  return module.exports.middleware = morgan(logFormat, { stream: rfsStream })
+}

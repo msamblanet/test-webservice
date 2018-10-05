@@ -18,8 +18,8 @@ npm install && npm test && npm start
 | --- | --- |
 | `/` | Responds with general info about the request and service as json |
 | `/status` | Responds with status JSON<br>Status defaults healthy but can be set with other endpoints<br>If healthy, `HTTP 200` is used<br>If unhealthy, `HTTP 503` is used |
-| `/status/setGood` | Sets the health to good / healthy |
-| `/status/setBad` | Sets the health to bad / unhealthy |
+| `/status/setHealthy` | Sets the health to healthy |
+| `/status/setUnhealthy` | Sets the health to  unhealthy |
 | `/info` | Responds with JSON describing system and service configuration |
 | Default | Responds with `HTTP 404`
 
@@ -32,6 +32,7 @@ npm install && npm test && npm start
 
 # Configuration Settings
 Configuration settings may be set via the environment OR via a .env file.
+
 | Setting | Description | Default |
 | --- | --- | --- |
 | `PORT` |  HTTP port to listen on | `3000` |
@@ -80,9 +81,7 @@ Suggested reading on many of these tools: <https://hackernoon.com/testing-node-j
 - [src/](src) - Project source code
   - [config.js](src/config.js) - Pulls all configuration out of the environment into an easier-to-use object
   - [expressRouter.js](src/expressRouter.js) - Initializes the express engine with all of the middleware and routers
-  - [middleware/](src/middleware) - Custom middleware implementation for express.  These modules
-    all expose an object with a ```.middleware``` property which contains the Express
-    middleware function.  Other functions may be exposed if needed
+  - [middleware/](src/middleware) - Custom middleware implementations for express
 - [test/](test) - Unit test code
 
 # Output Folders

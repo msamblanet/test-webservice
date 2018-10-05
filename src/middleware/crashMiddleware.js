@@ -1,19 +1,23 @@
 /**
  * Defines an express middleware to process the fail and crash query parameters
  */
-const config = require('../config')
+module.exports = (config) => {
+  // Sanity checks...
+  if (!config) throw new Error("config required")
+  if (!config.identity) throw new Error("config.identity required")
 
-module.exports.middleware = (req, res, next) => {
+  const crashExitCode = config.crashExitCode || 200
+  const onExit = config.onExit || () => process.exit(crashExitCode)
 
-  if (typeof req.query['fail'] !== 'undefined') {
-    console.log(`${config.identity} - Failing request as requested by query parameter`)
-    throw new Error("Failing request per FAIL parameter")
+  return (req, res, next) => {
+    if (typeof req.query['fail'] !== 'undefined') {
+      console.log(`${config.identity} - Failing request as requested by query parameter`)
+      throw new Error("Failing request per FAIL parameter")
+    }
+    else if (typeof req.query['crash'] !== 'undefined') {
+      console.log(`${config.identity} - Crashing server as requested by query parameter`)
+      onExit.apply(this, arguments)
+    }
+    else next()
   }
-
-  else if (typeof req.query['crash'] !== 'undefined') {
-    console.log(`${config.identity} - Crashing server as requested by query parameter`)
-    process.exit(200)
-  }
-
-  else next()
 }

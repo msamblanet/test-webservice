@@ -4,35 +4,36 @@
  */
 const express = require('express')
 const os = require('os')
-const config = require('../config')
 
-var serviceStatus = "good"
+module.exports = (config) => {
+  // Sanity checks...
+  if (!config) throw new Error("config required")
+  if (!config.identity) throw new Error("config.identity required")
 
-function buildStatusResponse() {
-  return {
-    identity: config.identity,
-    serviceStatus: serviceStatus
+  var isHealthy = !!(config.initialIsHealthy || true)
+
+  function buildStatusResponse() {
+    return {
+      identity: config.identity,
+      isHealthy: isHealthy
+    }
   }
-}
 
-function statusMiddleware(req, res) {
-  res.status((serviceStatus === "good" ? 200 : 503)).json(buildStatusResponse(serviceStatus))
-}
-
-function setStatusMiddleware(newStatus, req, res) {
-  if (newStatus === serviceStatus) {
-    msg = `${config.identity} - Stage unchanged: ${serviceStatus}`
-  } else {
-    serviceStatus = newStatus
-    msg = `${config.identity} - Stage changed: ${serviceStatus}`
+  function setStatusMiddleware(newIsHealthy, req, res) {
+    if (isHealthy === newIsHealthy) {
+      msg = `${config.identity} - Status unchanged: isHealthy=${isHealthy}`
+    } else {
+      isHealthy = newIsHealthy
+      msg = `${config.identity} - Status changed: isHealthy=${isHealthy}`
+    }
+    console.log(msg)
+    res.send(msg)
   }
-  console.log(msg)
-  res.send(msg)
+
+  statusRouter = express.Router()
+  statusRouter.get('/', (req, res) => res.status(isHealthy ? 200 : 503)).json(buildStatusResponse()))
+  statusRouter.get('/setHealthy', setStatusMiddleware.bind(this, true))
+  statusRouter.get('/setUnhealthy', setStatusMiddleware.bind(this, false))
+
+  module.exports.middleware = statusRouter
 }
-
-statusRouter = express.Router()
-statusRouter.get('/', statusMiddleware)
-statusRouter.get('/setGood', setStatusMiddleware.bind(this, "good"))
-statusRouter.get('/setBad', setStatusMiddleware.bind(this, "bad"))
-
-module.exports.middleware = statusRouter

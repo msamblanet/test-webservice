@@ -5,5 +5,8 @@ require('dotenv').config()
 const config = require('./src/config')
 const expressRouter = require('./src/expressRouter')
 
-app = expressRouter.applyMiddleware()
+// Generate and apply routing to Express...
+app = expressRouter.applyMiddleware(config)
+
+// Start listening...
 app.listen(config.port, () => console.log(`${config.identity} - ${config.serviceName} listening on port ${config.port}`))
