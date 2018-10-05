@@ -7,7 +7,7 @@ module.exports = (config) => {
   if (!config.identity) throw new Error("config.identity required")
 
   const crashExitCode = config.crashExitCode || 200
-  const onExit = config.onExit || () => process.exit(crashExitCode)
+  const onCrash = config.onCrash || (() => process.exit(crashExitCode))
 
   return (req, res, next) => {
     if (typeof req.query['fail'] !== 'undefined') {
@@ -16,7 +16,7 @@ module.exports = (config) => {
     }
     else if (typeof req.query['crash'] !== 'undefined') {
       console.log(`${config.identity} - Crashing server as requested by query parameter`)
-      onExit.apply(this, arguments)
+      onCrash()
     }
     else next()
   }

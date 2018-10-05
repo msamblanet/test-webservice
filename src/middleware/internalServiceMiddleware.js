@@ -26,5 +26,5 @@ module.exports = (config) => {
     }
   }
 
-  return (req, res) => res.json(buildStockResponseObject(req))
+  return (req, res, next) => res.json(buildStockResponseObject(req))
 }

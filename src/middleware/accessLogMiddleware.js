@@ -7,7 +7,7 @@ const path = require('path')
 const fs = require('fs')
 const rfs = require('rotating-file-stream')
 
-modules.exports = (config) => {
+module.exports = (config) => {
   // Sanity checks...
   if (!config) throw new Error("config required")
   if (!config.accessLogRotation) throw new Error("config.accessLogRotation required")

@@ -20,20 +20,22 @@ module.exports = (config) => {
   }
 
   function setStatusMiddleware(newIsHealthy, req, res) {
-    if (isHealthy === newIsHealthy) {
-      msg = `${config.identity} - Status unchanged: isHealthy=${isHealthy}`
-    } else {
-      isHealthy = newIsHealthy
-      msg = `${config.identity} - Status changed: isHealthy=${isHealthy}`
+    const rv = {
+      identity: config.identity,
+      oldIsHealthy: isHealthy,
+      newIsHealthy: newIsHealthy
     }
-    console.log(msg)
-    res.send(msg)
+    console.log(`${config.identity} Status Update - ${JSON.stringify(rv)}`)
+
+    isHealthy = newIsHealthy
+
+    res.json(rv)
   }
 
   statusRouter = express.Router()
-  statusRouter.get('/', (req, res) => res.status(isHealthy ? 200 : 503)).json(buildStatusResponse()))
+  statusRouter.get('/', (req, res) => res.status(isHealthy ? 200 : 503).json(buildStatusResponse()))
   statusRouter.get('/setHealthy', setStatusMiddleware.bind(this, true))
   statusRouter.get('/setUnhealthy', setStatusMiddleware.bind(this, false))
 
-  module.exports.middleware = statusRouter
+  return statusRouter
 }

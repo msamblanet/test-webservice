@@ -9,4 +9,4 @@ const expressRouter = require('./src/expressRouter')
 app = expressRouter.applyMiddleware(config)
 
 // Start listening...
-app.listen(config.port, () => console.log(`${config.identity} - ${config.serviceName} listening on port ${config.port}`))
+app.listen(config.port, () => console.log(`${config.identity} listening on port ${config.port}`))

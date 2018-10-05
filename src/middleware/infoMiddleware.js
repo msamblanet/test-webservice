@@ -13,22 +13,22 @@ module.exports = (config) => {
     return {
       identity: config.identity,
       config: config,
-      env: process.env,
       host: {
-        hostname: os.uptime(),
+        hostname: os.hostname(),
         type: os.type(),
         platform: os.platform(),
         arch: os.arch(),
         release: os.release(),
-        uptime: os.uptime(),
+        uptimeHours: os.uptime()/60.0/60.0, // Hours
         loadavg: os.loadavg(),
-        totalmem: os.totalmem(),
-        freemem: os.freemem(),
+        totalmemGB: os.totalmem()/1024.0/1024.0/1024.0, // GB
+        freememGB: os.freemem()/1024.0/1024.0/1024.0, // GB
         cpus: os.cpus(),
         networkInterfaces: os.networkInterfaces()
-      }
+      },
+      env: process.env
     }
   }
 
-  return (req) => res.json(buildInfoResponse())
+  return (req, res, next) => res.json(buildInfoResponse())
 }

@@ -4,7 +4,7 @@
 module.exports = function(config) {
   var serviceHitCount = config.initialHitCount || 0
 
-  const rv = function() = (req, res, next) => {
+  const rv = (req, res, next) => {
     serviceHitCount++
     next()
   }
