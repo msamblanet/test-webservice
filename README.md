@@ -19,9 +19,9 @@ npm install && npm test && npm start
 | `/` | Responds with general info about the request and service as json |
 | `/status` | Responds with status JSON<br>Status defaults healthy but can be set with other endpoints<br>If healthy, `HTTP 200` is used<br>If unhealthy, `HTTP 503` is used |
 | `/status/setHealthy` | Sets the health to healthy |
-| `/status/setUnhealthy` | Sets the health to  unhealthy |
+| `/status/setUnhealthy` | Sets the health to unhealthy |
 | `/info` | Responds with JSON describing system and service configuration |
-| Default | Responds with `HTTP 404`
+| Default | Responds with the default express `HTTP 404` page |
 
 # Query Parameters for all pages
 | Parameters | Description |
@@ -31,8 +31,6 @@ npm install && npm test && npm start
 | `crash` | Simulates a server crash via process.exit() |
 
 # Configuration Settings
-Configuration settings may be set via the environment OR via a .env file.
-
 | Setting | Description | Default |
 | --- | --- | --- |
 | `PORT` |  HTTP port to listen on | `3000` |
@@ -41,6 +39,8 @@ Configuration settings may be set via the environment OR via a .env file.
 | `SERVICENAME` |  Name of the service | `test-webservice` |
 | `IDENTITY` |  String appended to all logs to identify<br> the instance of the service | Generated from<br>servicename and hostname |
 | `FAIL_UNIT_TESTS` | If set, unit tests will fail.<br>NOTE: This **CANNOT** be set via a .env file |
+
+Unless otherwise noted, settings may be set via the environment OR via a .env file.
 
 # Logging
 - Diagnostic logs are written to console.  No log level control is provided.
@@ -73,8 +73,7 @@ Configuration settings may be set via the environment OR via a .env file.
 | [istanbul](https://istanbul.js.org/) | Code coverage |
 | [nyc](https://github.com/istanbuljs/nyc) | Command line tool for unit testing and coverage |
 
-Suggested reading on many of these tools: <https://hackernoon.com/testing-node-js-in-2018-10a04dd77391>
-
+Suggested reading on node test tools: <https://hackernoon.com/testing-node-js-in-2018-10a04dd77391>
 
 # High-Level Tour of the Files
 - [server.js](server.js) - The main server entry point (used by ```npm start```)
