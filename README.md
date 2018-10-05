@@ -51,6 +51,7 @@ Unless otherwise noted, settings may be set via the environment OR via a .env fi
 | --- | --- |
 | `npm test` | Runs unit tests |
 | `npm start` | Starts the service |
+| `npm run make-docker` | Builds a local docker image tagged msamblanet/test-webservice:latest |
 
 # Runtime Dependencies
 | Runtime Dependency | Purpose |
@@ -71,7 +72,8 @@ Unless otherwise noted, settings may be set via the environment OR via a .env fi
 | [nock](https://github.com/nock/nock) | HTTP mocking library |
 | [mock-require](https://github.com/boblauer/mock-require) | require() mocking and cache-busting |
 | [istanbul](https://istanbul.js.org/) | Code coverage |
-| [nyc](https://github.com/istanbuljs/nyc) | Command line tool for unit testing and coverage |
+| [nyc](https://github.com/istanbuljs/nyc) | CLI for unit testing and coverage |
+| [cross-var](https://www.npmjs.com/package/cross-var) | Enables cross-platform variable expansion in npm scripts |
 
 Suggested reading on node test tools: <https://hackernoon.com/testing-node-js-in-2018-10a04dd77391>
 
